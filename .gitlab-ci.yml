@@ -1,0 +1,37 @@
+image: tmaier/docker-compose:latest
+
+services:
+  - docker:dind
+
+before_script:
+  - docker info
+  - docker-compose --version
+
+variables:
+  DOCKER_TLS_CERTDIR: ""
+
+# cache:
+#   key: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG"
+#   paths:
+#     - /app
+
+stages:
+  - build
+  - deploy
+
+build image:
+  stage: build
+  script:
+    - echo RABBITMQ_HOSTNAME=rabbitmq >> .env
+    - echo RABBITMQ_DEFAULT_USER=testUser >> .env
+    - echo RABBITMQ_DEFAULT_PASS=testPass >> .env
+    - docker-compose build
+
+deploy:
+  stage: deploy
+  only:
+    refs:
+      - master
+  trigger: 
+    project: aceis-group-ltd/smart-traffic-control
+    branch: master

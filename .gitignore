@@ -1,0 +1,6 @@
+.docker/rabbitmq
+/Doxygen/html
+/Doxygen/latex
+/tf2/*
+/saved_model/*
+.env

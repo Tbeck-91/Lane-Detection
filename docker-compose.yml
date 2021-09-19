@@ -1,0 +1,18 @@
+version: "3.9"
+
+# Explicitly defining a network for the Docker containers to communicate on
+networks:
+  stc-docker:
+    name: stc-docker
+    driver: bridge
+
+services:   
+  lane_recognition:
+    build: .
+    container_name: lane_recognition
+    env_file: # Getting the environment file (NOT included in repository for safety)
+      - .env
+    networks: # Connecting to the agtc-docker network
+      stc-docker:
+        aliases: 
+          - backend
